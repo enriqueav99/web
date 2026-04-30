@@ -24,20 +24,13 @@ jobs:
         with:
           node-version: 22
           cache: npm
-          
-      - name: Debug
-        run: |
-          node --version
-          npm --version
-          npm config list
-          env | grep npm || echo "no npm env vars"
-          
+
       - name: Disable corepack
         run: corepack disable
-        
-      - run: npm ci --verbose 2>&1 | head -100
 
-      - run: npx ng build --base-href /
+      - run: npm ci
+
+      - run: npm run build -- --base-href /
 
       - name: Add 404.html for SPA routing
         run: cp dist/eav-site/browser/index.html dist/eav-site/browser/404.html
