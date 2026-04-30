@@ -28,6 +28,10 @@ interface TerminalLine {
             <span class="prompt">~$</span>
             <input #input
               type="text"
+              autocapitalize="off"
+              autocomplete="off"
+              autocorrect="off"
+              spellcheck="false"
               [placeholder]="i18n.lang() === 'es' ? 'Escribe un comando...' : 'Type a command...'"
               [value]="query()"
               (input)="query.set(input.value)"
@@ -36,7 +40,14 @@ interface TerminalLine {
               (keydown.arrowup)="moveSelection(-1)"
               (keydown.enter)="handleEnter()"
             />
+            <button class="close-btn" type="button" (click)="close()" aria-label="Close">×</button>
             <kbd>ESC</kbd>
+          </div>
+
+          <div class="quick-chips" aria-label="Quick commands">
+            @for (chip of quickChips; track chip) {
+              <button class="chip" type="button" (click)="runChip(chip)">{{ chip }}</button>
+            }
           </div>
 
           @if (terminalOutput().length > 0) {
@@ -94,6 +105,29 @@ interface TerminalLine {
       background: var(--bg-secondary); border: 1px solid var(--border);
       border-radius: var(--radius); box-shadow: 0 20px 60px rgba(0,0,0,0.5);
       overflow: hidden; animation: slideDown 0.2s ease;
+      display: flex; flex-direction: column;
+    }
+    .close-btn {
+      display: none;
+      background: none; border: none; color: var(--text-muted);
+      font-size: 1.6rem; line-height: 1; padding: 0 4px; cursor: pointer;
+      &:hover, &:focus { color: var(--accent); }
+    }
+    .quick-chips {
+      display: none;
+      gap: 8px; padding: 10px 16px; border-bottom: 1px solid var(--border);
+      overflow-x: auto; -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      &::-webkit-scrollbar { display: none; }
+    }
+    .chip {
+      flex-shrink: 0;
+      font-family: var(--font-mono); font-size: 0.78rem;
+      padding: 6px 12px; border-radius: 999px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      color: var(--text-secondary); cursor: pointer;
+      transition: all 0.15s ease;
+      &:hover, &:active { border-color: var(--accent); color: var(--accent); }
     }
     .search-bar {
       display: flex; align-items: center; gap: 12px;
@@ -166,6 +200,20 @@ interface TerminalLine {
     @keyframes toastOut { from { opacity: 1; } to { opacity: 0; } }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+    @media (max-width: 768px), (pointer: coarse) {
+      .overlay { padding-top: 0; align-items: stretch; }
+      .palette {
+        max-width: 100%; height: 100dvh; max-height: 100dvh;
+        border-radius: 0; border-left: none; border-right: none;
+        animation: fadeIn 0.2s ease;
+      }
+      .close-btn { display: inline-flex; }
+      .search-bar kbd { display: none; }
+      .quick-chips { display: flex; }
+      .results, .terminal-output { flex: 1; max-height: none; }
+      .footer { display: none; }
+    }
   `]
 })
 export class CommandPaletteComponent {
@@ -223,20 +271,43 @@ export class CommandPaletteComponent {
     );
   });
 
+  readonly quickChips = ['help', 'whoami', 'ls', 'cat about', 'skills', 'contact', 'neofetch'];
+
   @HostListener('window:keydown', ['$event'])
   onKeydown(e: KeyboardEvent) {
     if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
       e.preventDefault();
-      this.open.set(!this.open());
-      this.query.set('');
-      this.terminalOutput.set([]);
+      this.toggle();
     }
+  }
+
+  toggle() {
+    this.open.set(!this.open());
+    this.query.set('');
+    this.terminalOutput.set([]);
   }
 
   close() {
     this.open.set(false);
     this.query.set('');
     this.terminalOutput.set([]);
+  }
+
+  runChip(chip: string) {
+    if (chip === 'cat about') {
+      const aboutCmd = this.commands.find(c => c.id === 'about');
+      if (aboutCmd) { this.execute(aboutCmd); return; }
+    }
+    if (chip === 'skills') {
+      const skillsCmd = this.commands.find(c => c.id === 'skills');
+      if (skillsCmd) { this.execute(skillsCmd); return; }
+    }
+    if (chip === 'contact') {
+      const contactCmd = this.commands.find(c => c.id === 'contact');
+      if (contactCmd) { this.execute(contactCmd); return; }
+    }
+    this.query.set(chip);
+    this.runTerminal(chip);
   }
 
   moveSelection(delta: number) {

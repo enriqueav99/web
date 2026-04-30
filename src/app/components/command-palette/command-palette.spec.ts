@@ -144,4 +144,40 @@ describe('CommandPaletteComponent', () => {
     const results = component.filtered();
     expect(results.find(c => c.id === 'lang')).toBeTruthy();
   });
+
+  it('should toggle open state via toggle()', () => {
+    expect(component.open()).toBe(false);
+    component.toggle();
+    expect(component.open()).toBe(true);
+    component.toggle();
+    expect(component.open()).toBe(false);
+  });
+
+  it('should reset query and terminal output when toggling closed', () => {
+    component.toggle();
+    component.query.set('whoami');
+    component.toggle();
+    expect(component.query()).toBe('');
+  });
+
+  it('should expose quick chips for mobile UI', () => {
+    expect(Array.isArray(component.quickChips)).toBe(true);
+    expect(component.quickChips.length).toBeGreaterThan(0);
+    expect(component.quickChips).toContain('help');
+  });
+
+  it('should produce terminal output when running a chip command', () => {
+    component.runChip('help');
+    expect(component.terminalOutput().length).toBeGreaterThan(0);
+    expect(component.terminalOutput()[0].type).toBe('cmd');
+    expect(component.terminalOutput()[0].text).toBe('help');
+  });
+
+  it('should render neofetch chip output', () => {
+    component.runChip('neofetch');
+    const out = component.terminalOutput();
+    const outputLine = out.find(l => l.type === 'output');
+    expect(outputLine).toBeTruthy();
+    expect(outputLine!.text).toContain('Kubernetes');
+  });
 });
