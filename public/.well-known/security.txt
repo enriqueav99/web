@@ -1,0 +1,3 @@
+Contact: mailto:enriqueav1999@gmail.com
+Preferred-Languages: es, en
+Canonical: https://www.enriqueav.com/.well-known/security.txt

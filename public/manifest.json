@@ -1,0 +1,27 @@
+{
+  "name": "Enrique Andrés Villar — Platform Engineer",
+  "short_name": "EAV Site",
+  "description": "Enrique Andrés Villar — Platform/DevOps Engineer. Kubernetes, OpenShift, CI/CD, GitOps.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0f",
+  "theme_color": "#f57c00",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
