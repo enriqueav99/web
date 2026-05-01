@@ -60,13 +60,14 @@ import { I18nService } from '../../services/i18n.service';
     }
     .boot-log {
       display: none;
-      position: absolute; inset: 0;
+      position: absolute; top: 0; left: 0; right: 0;
+      max-height: 42%;
       padding: calc(var(--nav-height) + 14px) 18px 0;
-      font-family: var(--font-mono); font-size: 0.72rem; line-height: 1.55;
-      color: var(--text-muted); opacity: 0.45;
+      font-family: var(--font-mono); font-size: 0.7rem; line-height: 1.5;
+      color: var(--text-muted); opacity: 0.22;
       pointer-events: none; overflow: hidden;
-      mask-image: linear-gradient(180deg, #000 35%, transparent 70%);
-      -webkit-mask-image: linear-gradient(180deg, #000 35%, transparent 70%);
+      mask-image: linear-gradient(180deg, #000 0%, #000 30%, transparent 90%);
+      -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 30%, transparent 90%);
     }
     .boot-line { display: flex; gap: 8px; white-space: nowrap; }
     .boot-tag { color: var(--text-muted); &.boot-ok { color: var(--terminal-green); } }
@@ -86,8 +87,10 @@ import { I18nService } from '../../services/i18n.service';
       color: var(--terminal-green);
       margin-bottom: 24px;
       padding: 8px 16px;
-      background: rgba(0, 230, 118, 0.08);
-      border: 1px solid rgba(0, 230, 118, 0.2);
+      background: rgba(10, 10, 15, 0.72);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(0, 230, 118, 0.3);
       border-radius: var(--radius-sm);
       display: inline-block;
       .terminal-prompt { color: var(--accent); margin-right: 8px; }
