@@ -77,7 +77,8 @@ import { I18nService } from '../../services/i18n.service';
     }
     @media (max-width: 768px) {
       .section { padding: 60px 16px; }
-      .projects-grid { grid-template-columns: 1fr; }
+      .projects-grid { grid-template-columns: 1fr; gap: 16px; }
+      .project-card { padding: 20px 18px; }
       .writing-card { flex-direction: column; text-align: center; .arrow { display: none; } }
     }
   `]

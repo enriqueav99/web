@@ -108,7 +108,18 @@ import { I18nService } from '../../services/i18n.service';
     }
     @media (max-width: 768px) {
       .section { padding: 60px 16px; }
-      .contact-cards { grid-template-columns: 1fr; }
+      .contact-cards {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+      .contact-card {
+        padding: 18px 12px; gap: 8px;
+        .contact-icon { width: 40px; height: 40px; }
+        .contact-icon svg { width: 22px; height: 22px; }
+        .contact-label { font-size: 0.7rem; }
+        .contact-value { font-size: 0.72rem; word-break: break-word; }
+      }
+      .contact-card:last-child { grid-column: 1 / -1; }
     }
   `]
 })

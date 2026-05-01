@@ -83,8 +83,22 @@ import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
       svg { width: 18px; height: 18px; }
     }
     @media (max-width: 768px) {
-      .section { padding: 60px 16px; }
-      .skills-grid { grid-template-columns: 1fr; }
+      .section { padding: 60px 12px; }
+      .skills-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .skill-category { padding: 16px 12px; }
+      .category-header { gap: 8px; margin-bottom: 14px; h3 { font-size: 0.85rem; } }
+      :host ::ng-deep .category-icon {
+        width: 32px; height: 32px;
+        svg { width: 18px; height: 18px; }
+      }
+      .skills-list { gap: 6px; }
+      .skill-chip {
+        padding: 4px 8px; font-size: 0.7rem; gap: 5px;
+      }
+      :host ::ng-deep .chip-icon {
+        width: 14px; height: 14px;
+        svg { width: 12px; height: 12px; }
+      }
     }
   `]
 })

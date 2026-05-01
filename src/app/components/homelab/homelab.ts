@@ -115,8 +115,16 @@ import { I18nService } from '../../services/i18n.service';
       .arrow { transition: transform 0.3s; }
     }
     @media (max-width: 768px) {
-      .section { padding: 60px 16px; }
-      .services-grid { grid-template-columns: 1fr; }
+      .section { padding: 60px 12px; }
+      .services-grid { grid-template-columns: repeat(2, 1fr); }
+      .service-group {
+        padding: 14px 12px;
+        &:hover { padding-left: 14px; }
+      }
+      .group-header { gap: 6px; margin-bottom: 10px; h3 { font-size: 0.78rem; } }
+      .service-count { font-size: 0.6rem; padding: 1px 6px; }
+      .service-list { gap: 5px; }
+      .service-chip { padding: 3px 7px; font-size: 0.65rem; }
       .service-group { border-right: none; }
       .terminal-bar { font-size: 0.7rem; }
     }
