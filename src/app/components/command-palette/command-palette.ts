@@ -19,11 +19,11 @@ interface TerminalLine {
   standalone: true,
   template: `
     @if (toast()) {
-      <div class="toast" (click)="toast.set('')">{{ toast() }}</div>
+      <div class="toast" role="status" aria-live="polite">{{ toast() }}</div>
     }
     @if (open()) {
-      <div class="overlay" (click)="close()">
-        <div class="palette" (click)="$event.stopPropagation()">
+      <div class="overlay" role="presentation" (click)="onBackdropClick($event)">
+        <div class="palette" role="dialog" aria-modal="true" aria-label="Command palette">
           <div class="search-bar">
             <span class="prompt">~$</span>
             <input #input
@@ -291,6 +291,10 @@ export class CommandPaletteComponent {
     this.open.set(false);
     this.query.set('');
     this.terminalOutput.set([]);
+  }
+
+  onBackdropClick(e: MouseEvent) {
+    if (e.target === e.currentTarget) this.close();
   }
 
   runChip(chip: string) {

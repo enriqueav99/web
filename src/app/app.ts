@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, AfterViewInit, OnDestroy } from '@angular/core';
 import { NavbarComponent } from './components/navbar/navbar';
 import { HeroComponent } from './components/hero/hero';
 import { AboutComponent } from './components/about/about';

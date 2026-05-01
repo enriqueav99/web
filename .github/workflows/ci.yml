@@ -15,7 +15,7 @@ permissions:
 
 jobs:
   test:
-    name: Test & Build
+    name: Lint, Test & Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -29,6 +29,9 @@ jobs:
         run: corepack disable
 
       - run: npm ci
+
+      - name: Lint
+        run: npm run lint
 
       - name: Run tests
         run: npm test

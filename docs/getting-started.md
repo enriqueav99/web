@@ -15,9 +15,16 @@ npm run build
 # Tests
 npm test
 
+# Lint (ESLint con angular-eslint)
+npm run lint
+
 # Build + watch en desarrollo
 npm run watch
 ```
+
+## CI
+
+El workflow `.github/workflows/ci.yml` se ejecuta en cada pull request y push a `main`, y lanza en orden: `npm ci` → `npm run lint` → `npm test` → `npm run build:prod`. Si cualquiera de los pasos falla, el merge queda bloqueado.
 
 ## Docker
 
@@ -39,6 +46,7 @@ El Dockerfile usa **multi-stage build**: Node 22 Alpine para compilar, Nginx Alp
 | `.gitignore` | Excluye dist, node_modules, IDE configs, cache |
 | `.editorconfig` | Indent 2 espacios, UTF-8, single quotes en TS |
 | `.prettierrc` | printWidth 100, singleQuote, parser angular para HTML |
+| `eslint.config.js` | Config de ESLint flat — `@angular-eslint` (ts + plantillas) con reglas de a11y |
 | `.prettierignore` | Ignora dist, node_modules, package-lock.json, .angular |
 | `robots.txt` | Allow all (en `public/`) |
 | `sitemap.xml` | Placeholder para rellenar con URL final (en `public/`) |
