@@ -7,13 +7,23 @@ import { I18nService } from '../../services/i18n.service';
   template: `
     <section id="hero" class="hero">
       <canvas #particles class="particles-canvas" aria-hidden="true"></canvas>
+      <div class="boot-log" aria-hidden="true">
+        @for (line of bootLines(); track $index) {
+          <div class="boot-line">
+            <span class="boot-tag" [class.boot-ok]="line.ok">{{ line.ok ? '[ OK ]' : '[ .. ]' }}</span>
+            <span class="boot-msg">{{ line.msg }}</span>
+          </div>
+        }
+      </div>
       <div class="hero-content">
         <div class="terminal-tag">
           <span class="terminal-prompt">~$</span> cat about_me.yml
         </div>
         <h1>
           <span class="greeting">{{ i18n.t('hero.greeting') }}</span>
-          <span class="name glitch" data-text="Enrique Andrés Villar">Enrique Andrés Villar</span>
+          <span class="name glitch" data-text="Enrique Andrés Villar"
+            [class.glitch-active]="glitchActive()"
+            (touchstart)="triggerGlitch()">Enrique Andrés Villar</span>
         </h1>
         <div class="typed-container">
           <span class="typed-prefix">&gt;&nbsp;</span>
@@ -47,6 +57,23 @@ import { I18nService } from '../../services/i18n.service';
       top: 0; left: 0;
       width: 100%; height: 100%;
       pointer-events: none;
+    }
+    .boot-log {
+      display: none;
+      position: absolute; inset: 0;
+      padding: calc(var(--nav-height) + 14px) 18px 0;
+      font-family: var(--font-mono); font-size: 0.72rem; line-height: 1.55;
+      color: var(--text-muted); opacity: 0.45;
+      pointer-events: none; overflow: hidden;
+      mask-image: linear-gradient(180deg, #000 35%, transparent 70%);
+      -webkit-mask-image: linear-gradient(180deg, #000 35%, transparent 70%);
+    }
+    .boot-line { display: flex; gap: 8px; white-space: nowrap; }
+    .boot-tag { color: var(--text-muted); &.boot-ok { color: var(--terminal-green); } }
+    .boot-msg { color: var(--text-secondary); }
+    @media (max-width: 768px), (pointer: coarse) {
+      .particles-canvas { display: none; }
+      .boot-log { display: block; }
     }
     .hero-content {
       position: relative;
@@ -87,7 +114,7 @@ import { I18nService } from '../../services/i18n.service';
         cursor: default;
       }
       .glitch {
-        &:hover {
+        &:hover, &.glitch-active {
           animation: glitch 0.4s linear;
         }
         &::before, &::after {
@@ -105,11 +132,11 @@ import { I18nService } from '../../services/i18n.service';
           color: #ffb74d;
           z-index: -1;
         }
-        &:hover::before {
+        &:hover::before, &.glitch-active::before {
           animation: glitch-top 0.4s linear; opacity: 0.7;
           clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
         }
-        &:hover::after {
+        &:hover::after, &.glitch-active::after {
           animation: glitch-bottom 0.4s linear; opacity: 0.7;
           clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
         }
@@ -253,6 +280,39 @@ export class HeroComponent implements OnDestroy, AfterViewInit {
   @ViewChild('particles') canvasRef!: ElementRef<HTMLCanvasElement>;
   i18n = inject(I18nService);
   displayText = signal('');
+  bootLines = signal<{ ok: boolean; msg: string }[]>([]);
+  glitchActive = signal(false);
+  private glitchTimeout: ReturnType<typeof setTimeout> | null = null;
+
+  triggerGlitch() {
+    if (this.reducedMotion) return;
+    this.glitchActive.set(false);
+    if (this.glitchTimeout) clearTimeout(this.glitchTimeout);
+    requestAnimationFrame(() => {
+      this.glitchActive.set(true);
+      this.glitchTimeout = setTimeout(() => this.glitchActive.set(false), 450);
+    });
+  }
+
+  private bootSource = [
+    'loading kernel modules...',
+    'mounting /dev/skills',
+    'starting kubelet.service',
+    'starting docker.service',
+    'starting argo-cd.service',
+    'starting prometheus.service',
+    'starting grafana.service',
+    'loading hero.module',
+    'reading about_me.yml',
+    'connecting to inditex-cluster',
+    'gitops sync: clean',
+    'observability stack ready',
+    'system online',
+  ];
+  private bootTimeout: ReturnType<typeof setTimeout> | null = null;
+  private isCoarsePointer = typeof window !== 'undefined'
+    && typeof window.matchMedia === 'function'
+    && (window.matchMedia('(pointer: coarse)').matches || window.matchMedia('(max-width: 768px)').matches);
 
   private phrasesEs = [
     'Platform Engineer @ Inditex',
@@ -292,7 +352,10 @@ export class HeroComponent implements OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    if (!this.reducedMotion) {
+    if (this.reducedMotion) return;
+    if (this.isCoarsePointer) {
+      this.startBootLog();
+    } else {
       this.initParticles();
       this.setupVisibilityObserver();
     }
@@ -300,9 +363,28 @@ export class HeroComponent implements OnDestroy, AfterViewInit {
 
   ngOnDestroy() {
     if (this.typingTimeout) clearTimeout(this.typingTimeout);
+    if (this.bootTimeout) clearTimeout(this.bootTimeout);
+    if (this.glitchTimeout) clearTimeout(this.glitchTimeout);
     cancelAnimationFrame(this.animFrame);
     if (this.resizeHandler) window.removeEventListener('resize', this.resizeHandler);
     this.heroObserver?.disconnect();
+  }
+
+  private startBootLog() {
+    let i = 0;
+    const tick = () => {
+      if (i >= this.bootSource.length) return;
+      const next = [...this.bootLines(), { ok: false, msg: this.bootSource[i] }];
+      this.bootLines.set(next);
+      this.bootTimeout = setTimeout(() => {
+        const lines = this.bootLines().slice();
+        if (lines[i]) lines[i] = { ok: true, msg: lines[i].msg };
+        this.bootLines.set(lines);
+        i++;
+        this.bootTimeout = setTimeout(tick, 280);
+      }, 180);
+    };
+    tick();
   }
 
   private get phrases() {
@@ -336,7 +418,7 @@ export class HeroComponent implements OnDestroy, AfterViewInit {
 
   private setupVisibilityObserver() {
     const section = this.canvasRef.nativeElement.parentElement;
-    if (!section) return;
+    if (!section || typeof IntersectionObserver === 'undefined') return;
     this.heroObserver = new IntersectionObserver(
       ([entry]) => { this.isVisible = entry.isIntersecting; },
       { threshold: 0 }
@@ -346,7 +428,8 @@ export class HeroComponent implements OnDestroy, AfterViewInit {
 
   private initParticles() {
     const canvas = this.canvasRef.nativeElement;
-    const ctx = canvas.getContext('2d')!;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
     this.resizeHandler = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
     this.resizeHandler();
     window.addEventListener('resize', this.resizeHandler);

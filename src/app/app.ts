@@ -33,8 +33,15 @@ import { CommandPaletteComponent } from './components/command-palette/command-pa
     <div class="cmd-hint" aria-hidden="true">
       <kbd>Ctrl</kbd><span>+</span><kbd>K</kbd>
     </div>
+    <button
+      type="button"
+      class="cmd-fab"
+      aria-label="Open terminal"
+      (click)="palette.toggle()">
+      <span class="cmd-fab-prompt">&gt;_</span>
+    </button>
     <app-navbar />
-    <app-command-palette />
+    <app-command-palette #palette />
     <main role="main">
       <app-hero />
       <div class="fade-section"><app-about /></div>
@@ -88,6 +95,31 @@ import { CommandPaletteComponent } from './components/command-palette/command-pa
     }
     @media (max-width: 768px) {
       .cmd-hint { display: none; }
+    }
+
+    .cmd-fab {
+      display: none;
+      position: fixed;
+      right: 18px;
+      bottom: calc(20px + env(safe-area-inset-bottom));
+      z-index: 60;
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      border: 1px solid var(--accent);
+      background: var(--bg-card);
+      color: var(--accent);
+      font-family: var(--font-mono);
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), 0 0 16px rgba(245, 124, 0, 0.25);
+      backdrop-filter: blur(8px);
+      transition: transform 0.15s ease, box-shadow 0.2s ease;
+      &:active { transform: scale(0.92); }
+    }
+    .cmd-fab-prompt { display: inline-block; transform: translateY(-1px); }
+    @media (max-width: 768px), (pointer: coarse) {
+      .cmd-fab { display: inline-flex; align-items: center; justify-content: center; }
     }
 
     .cursor-glow {

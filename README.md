@@ -44,6 +44,16 @@ To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use th
 ng test
 ```
 
+## Linting
+
+To check the code with ESLint (via [`@angular-eslint`](https://github.com/angular-eslint/angular-eslint)):
+
+```bash
+npm run lint
+```
+
+The same check runs on every pull request through the CI workflow.
+
 ## Running end-to-end tests
 
 For end-to-end (e2e) testing, run:
