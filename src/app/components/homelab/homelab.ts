@@ -142,17 +142,22 @@ export class HomelabComponent {
     {
       icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#f57c00" stroke-width="1.5" width="20" height="20"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>',
       titleKey: 'homelab.network',
-      services: ['Traefik', 'Pi-hole', 'WireGuard', 'CrowdSec', 'Nginx', 'Authentik'],
+      services: ['Traefik', 'Pi-hole', 'WireGuard', 'CrowdSec', 'Nginx', 'Authentik', 'Sysdig'],
     },
     {
       icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#f57c00" stroke-width="1.5" width="20" height="20"><rect x="3" y="4" width="18" height="5" rx="1"/><rect x="3" y="11" width="18" height="5" rx="1"/><circle cx="7" cy="6.5" r="0.7" fill="#f57c00"/><circle cx="7" cy="13.5" r="0.7" fill="#f57c00"/><path d="M9 19l3-3 3 3"/></svg>',
       titleKey: 'homelab.infra',
-      services: ['Portainer', 'Watchtower'],
+      services: ['Portainer', 'Watchtower', 'Uptime Kuma', 'Dozzle', 'Scrutiny', 'Diun'],
     },
     {
       icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#f57c00" stroke-width="1.5" width="20" height="20"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm6 0V9a2 2 0 00-2-2h-2a2 2 0 00-2 2v10m6 0a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2h-2a2 2 0 00-2 2v14z"/></svg>',
       titleKey: 'homelab.monitoring',
-      services: ['Prometheus', 'Grafana', 'Node Exporter', 'Netdata', 'cAdvisor', 'Vector', 'Sysdig'],
+      services: ['Prometheus', 'Grafana', 'Node Exporter', 'Netdata', 'cAdvisor', 'Vector'],
+    },
+    {
+      icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#f57c00" stroke-width="1.5" width="20" height="20"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v4c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/><path d="M3 9v4c0 1.66 4.03 3 9 3s9-1.34 9-3V9"/><path d="M3 13v4c0 1.66 4.03 3 9 3s9-1.34 9-3v-4"/></svg>',
+      titleKey: 'homelab.databases',
+      services: ['PostgreSQL', 'MariaDB', 'Redis', 'MinIO'],
     },
     {
       icon: '<svg viewBox="0 0 24 24" fill="none" stroke="#f57c00" stroke-width="1.5" width="20" height="20"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1h-2z"/></svg>',
