@@ -198,6 +198,10 @@ const translations: Record<string, Record<Lang, string>> = {
     es: 'Pipeline PKI auto-renovable con HashiCorp Vault y certmonger.',
     en: 'Self-renewing PKI pipeline with HashiCorp Vault and certmonger.',
   },
+  'blog.article3': {
+    es: 'Construyendo un gateway de Telegram integrado con Claude AI para controlar y consultar el servidor doméstico mediante lenguaje natural.',
+    en: 'Building a Telegram gateway powered by Claude AI to control and query the homeserver using natural language.',
+  },
   'blog.read': { es: 'Leer artículo', en: 'Read article' },
 
   // Contact
