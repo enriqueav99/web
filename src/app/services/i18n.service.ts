@@ -136,6 +136,7 @@ const translations: Record<string, Record<Lang, string>> = {
   'homelab.network': { es: 'Red & Seguridad', en: 'Network & Security' },
   'homelab.infra': { es: 'Infra & Ops', en: 'Infra & Ops' },
   'homelab.monitoring': { es: 'Monitorización', en: 'Monitoring' },
+  'homelab.databases': { es: 'Bases de Datos', en: 'Databases' },
   'homelab.productivity': { es: 'Productividad', en: 'Productivity' },
   'homelab.dev': { es: 'Dev & Tools', en: 'Dev & Tools' },
   'homelab.k3s': { es: 'K3s Cluster', en: 'K3s Cluster' },
