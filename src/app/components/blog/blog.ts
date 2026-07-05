@@ -125,5 +125,11 @@ export class BlogComponent {
       url: 'https://medium.com/@enriqueav1999/certmonger-vault-building-a-self-renewing-pki-pipeline-on-linux-abfd32cfe479',
       tags: ['Vault', 'PKI', 'Linux', 'Security'],
     },
+    {
+      title: 'Claude Telegram Gateway for My Homeserver',
+      descKey: 'blog.article3',
+      url: 'https://medium.com/@enriqueav1999/claude-telegram-gateway-for-my-homeserver-274888fa73af',
+      tags: ['Claude AI', 'Telegram', 'Homelab', 'Python', 'API'],
+    },
   ];
 }
